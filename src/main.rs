@@ -9,14 +9,20 @@ fn main() {
       panic!("usage: minigrep query filename");
     }
 
-    let query = &args[1];
-    let filename = &args[2];
-    println!("queryは{}です", query);
-    println!("filenameは{}です", filename);
+    let config = Config::new(&args);
 
-    let contents = fs::read_to_string(filename)
+    let contents = fs::read_to_string(config.filename)
       .expect("ファイルを開くのに失敗しました。");
     println!("テキストは : \n{}", contents);
 }
 
+struct Config {
+  query : String,
+  filename : String,
+}
 
+impl Config {
+  fn new(args: &[String]) -> Config {
+    Config{query : args[1].clone(), filename : args[2].clone()}
+  }
+}
