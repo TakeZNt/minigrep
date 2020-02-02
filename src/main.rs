@@ -9,13 +9,13 @@ fn main() {
 
     // 戻り値がある場合はunwrap_or_elseを使う
     let config = Config::new(&args).unwrap_or_else(|err| {
-        println!("引数の解析時に問題が発生しました。{}", err);
+        eprintln!("引数の解析時に問題が発生しました。{}", err);
         process::exit(1);
     });
 
     // 戻り値がないので if let Err(e)を使う
     if let Err(e) = minigrep::run(config){
-      println!("アプリケーションでエラーが発生しました。{}", e);
+      eprintln!("アプリケーションでエラーが発生しました。{}", e);
       process::exit(1);
     }
 }
