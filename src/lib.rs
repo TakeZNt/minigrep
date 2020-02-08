@@ -9,12 +9,16 @@ pub struct Config {
 }
 
 impl Config {
-    pub fn new(args: &[String]) -> Result<Config, &'static str> {
-        if args.len() < 3 {
-        return Err("usage: minigrep query filename");
-        }
-        let query = args[1].clone(); // 所有権の移転を回避するため、やむなくcloneしている
-        let filename = args[2].clone();
+    pub fn new(mut args: std::env::Args) -> Result<Config, &'static str> {
+        args.next(); // 第一引数は読み飛ばす
+        let query = match args.next() {
+            Some(arg) => arg,
+            None => return Err("queryが取得できなかった"), 
+        };
+        let filename = match args.next() {
+            Some(arg) => arg,
+            None => return Err("filenameが取得できなかった"), 
+        };
         let case_sensitive = env::var("CASE_INSENSITIVE").is_err();
 
         Ok(Config{query, filename, case_sensitive}) 
